@@ -1,4 +1,9 @@
 let content = document.querySelector('.content');
+let color = 'black'
+let mouseDown = false
+let colorButton = document.querySelector('.color-button');
+document.body.onmousedown = () => (mouseDown = true)
+document.body.onmouseup = () => (mouseDown = false)
 function populateBoard(size) {
     let board = document.querySelector('.board');
     let squares = board.querySelectorAll("div");
@@ -9,7 +14,9 @@ function populateBoard(size) {
 
     for (let i = 0; i < size2; i++) {
        let square = document.createElement('div')
-       square.style.backgroundColor = 'blue'
+       square.addEventListener('mouseover', colorSquare);
+       square.addEventListener('mousedown', colorSquare);
+       square.style.backgroundColor = 'white'
        board.appendChild(square)
     }
 }
@@ -22,6 +29,29 @@ function changeSize(input) {
         alert.textContent = `Board size: ${input}x${input}`
     }
     else {
-        alert.textContent = "too many squares";
+        alert.textContent = "Board only accepts values between 1 and 100";
     }
+}
+
+function colorSquare() {
+    if ('mouseover' && !mouseDown) return
+    if (color === 'random') {
+        this.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    }
+    else {
+        this.style.backgroundColor = color;
+    }
+    
+}
+
+function changeColor(choice) {
+    color = choice;
+    colorButton.style.backgroundColor = choice;
+}
+function reset() {
+    let board = document.querySelector('.board');
+    let squares = board.querySelectorAll('div');
+    squares.forEach((div) => {
+        div.style.backgroundColor = 'white';
+    })
 }
